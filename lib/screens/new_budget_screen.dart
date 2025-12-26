@@ -1,3 +1,5 @@
+import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
@@ -59,11 +61,11 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: _buildMonthTab('CURRENT MONTH', true),
+                        child: _buildMonthTab('CURRENT MONTH', isCurrentMonth),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _buildMonthTab('NEXT MONTH', false),
+                        child: _buildMonthTab('NEXT MONTH', !isCurrentMonth),
                       ),
                     ],
                   ),
@@ -321,36 +323,37 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
                     );
                   }).toList(),
 
-                  // Add New Category Button
+                  // Add New Category Button with Dashed Border
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/manage_categories');
                     },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppTheme.textGray.withOpacity(0.3),
-                          width: 2,
-                          style: BorderStyle.solid,
-                        ),
-                        borderRadius: BorderRadius.circular(18),
+                    child: CustomPaint(
+                      painter: _DashedRectPainter(
+                        color: AppTheme.textGray.withOpacity(0.3),
+                        strokeWidth: 2,
+                        gap: 10,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.add_circle_outline,
-                              color: AppTheme.textGray, size: 24),
-                          SizedBox(width: 8),
-                          Text(
-                            'Add New Category',
-                            style: TextStyle(
-                              color: AppTheme.textGray,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.add_circle_outline,
+                                color: AppTheme.textGray, size: 24),
+                            SizedBox(width: 8),
+                            Text(
+                              'Add New Category',
+                              style: TextStyle(
+                                color: AppTheme.textGray,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -364,15 +367,6 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
           _buildBottomNav(context, 1),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/add_expense');
-        },
-        backgroundColor: AppTheme.neonGreen,
-        elevation: 8,
-        child: const Icon(Icons.add, color: AppTheme.darkGreen, size: 32),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -380,7 +374,12 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          isCurrentMonth = isActive;
+          // In a real app, this would switch data for the month
+          if (title == 'CURRENT MONTH') {
+            isCurrentMonth = true;
+          } else {
+            isCurrentMonth = false;
+          }
         });
       },
       child: Container(
@@ -417,18 +416,17 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/');
               }),
-              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
+              _buildNavItem(Icons.account_balance, 'Budget', 1, currentIndex,
+                  () {
+                // Already on Budget
+              }),
+              _buildNavItem(Icons.bar_chart, 'Track', 2, currentIndex, () {
                 Navigator.pushNamed(context, '/statistics');
-              }),
-              const SizedBox(width: 60),
-              _buildNavItem(
-                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
-                Navigator.pushNamed(context, '/wallet');
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
                 Navigator.pushNamed(context, '/profile');
@@ -446,24 +444,27 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
 
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-            size: 24,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
               color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              size: 24,
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -477,4 +478,55 @@ class BudgetData {
   final Color color;
 
   BudgetData(this.name, this.budget, this.spent, this.icon, this.color);
+}
+
+class _DashedRectPainter extends CustomPainter {
+  final double strokeWidth;
+  final Color color;
+  final double gap;
+
+  _DashedRectPainter({
+    this.strokeWidth = 2.0,
+    this.color = Colors.grey,
+    this.gap = 5.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint dashedPaint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    double x = size.width;
+    double y = size.height;
+    
+    // Draw rounded rect with path
+    Path path = Path();
+    path.addRRect(RRect.fromRectAndRadius(
+      Rect.fromLTWH(0, 0, x, y), 
+      const Radius.circular(18), // Match container radius
+    ));
+
+    Path dashedPath = Path();
+    
+    // Convert path to dashed path
+    for (PathMetric pathMetric in path.computeMetrics()) {
+      double distance = 0.0;
+      while (distance < pathMetric.length) {
+        dashedPath.addPath(
+          pathMetric.extractPath(distance, distance + 10), // Dash length 10
+          Offset.zero,
+        );
+        distance += 10 + gap; // Dash length + gap
+      }
+    }
+
+    canvas.drawPath(dashedPath, dashedPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }

@@ -113,7 +113,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/');
+                    Navigator.pushReplacementNamed(context, '/signup');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.neonGreen,
@@ -145,7 +145,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             // Login Text
             TextButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/login');
               },
               child: const Text(
                 'Already have an account? Log in',

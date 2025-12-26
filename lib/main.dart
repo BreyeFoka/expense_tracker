@@ -14,6 +14,20 @@ import 'screens/profile_screen.dart';
 import 'screens/wallet_screen.dart';
 import 'screens/analytics_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/signup_screen.dart';
+import 'screens/forgot_password_screen.dart';
+import 'screens/email_sent_screen.dart';
+import 'screens/currency_selection_screen.dart';
+import 'screens/language_selection_screen.dart';
+import 'screens/notifications_settings_screen.dart';
+import 'screens/export_data_screen.dart';
+import 'screens/privacy_security_screen.dart';
+import 'screens/edit_profile_screen.dart';
+import 'screens/budget_personalization_screen.dart';
+import 'screens/review_transaction_screen.dart';
+import 'screens/import_momo_screen.dart';
+import 'screens/scan_receipt_screen.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -47,8 +61,12 @@ class MyApp extends StatelessWidget {
         initialRoute: '/splash',
         routes: {
           '/splash': (context) => const SplashScreen(),
-          '/': (context) => const NewHomeScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/signup': (context) => const SignupScreen(),
+          '/forgot_password': (context) => ForgotPasswordScreen(),
+          '/email_sent': (context) => const EmailSentScreen(),
+          '/': (context) => const NewHomeScreen(),
           '/manage_categories': (context) => const CategoryManagementScreen(),
           '/manage_tags': (context) => const TagManagementScreen(),
           '/statistics': (context) => const SpendingInsightsScreen(),
@@ -57,6 +75,16 @@ class MyApp extends StatelessWidget {
           '/profile': (context) => const ProfileScreen(),
           '/wallet': (context) => const WalletScreen(),
           '/analytics': (context) => const AnalyticsScreen(),
+          '/currency_selection': (context) => const CurrencySelectionScreen(),
+          '/language_selection': (context) => const LanguageSelectionScreen(),
+          '/notifications_settings': (context) => const NotificationsSettingsScreen(),
+          '/export_data': (context) => const ExportDataScreen(),
+          '/privacy_security': (context) => const PrivacySecurityScreen(),
+          '/edit_profile': (context) => const EditProfileScreen(),
+          '/budget_personalization': (context) => const BudgetPersonalizationScreen(),
+          '/review_transaction': (context) => const ReviewTransactionScreen(),
+          '/import_momo': (context) => const ImportMomoScreen(),
+          '/scan_receipt': (context) => const ScanReceiptScreen(),
         },
         // Removed 'home:' since 'initialRoute' is used to define the home route
       ),

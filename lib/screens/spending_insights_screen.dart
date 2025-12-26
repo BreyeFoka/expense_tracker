@@ -519,16 +519,8 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/add_expense');
-        },
-        backgroundColor: AppTheme.neonGreen,
-        elevation: 8,
-        child: const Icon(Icons.add, color: AppTheme.darkGreen, size: 32),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNav(context, 1),
+
+      bottomNavigationBar: _buildBottomNav(context, 2),
     );
   }
 
@@ -687,18 +679,17 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 Navigator.pushReplacementNamed(context, '/');
               }),
-              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
-                // Already on insights
-              }),
-              const SizedBox(width: 60),
               _buildNavItem(
-                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
-                Navigator.pushNamed(context, '/wallet');
+                  Icons.account_balance, 'Budget', 1, currentIndex, () {
+                Navigator.pushNamed(context, '/budget');
+              }),
+              _buildNavItem(Icons.bar_chart, 'Track', 2, currentIndex, () {
+                // Already on Track
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
                 Navigator.pushNamed(context, '/profile');
@@ -716,24 +707,27 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
 
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-            size: 24,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
               color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              size: 24,
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

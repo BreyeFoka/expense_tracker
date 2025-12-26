@@ -70,7 +70,9 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/edit_profile');
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.neonGreen,
                       foregroundColor: AppTheme.darkGreen,
@@ -126,25 +128,33 @@ class ProfileScreen extends StatelessWidget {
               Icons.notifications_outlined,
               'Notifications',
               'Manage your notifications',
-              () {},
+              () {
+                Navigator.pushNamed(context, '/notifications_settings');
+              },
             ),
             _buildSettingItem(
               Icons.lock_outline,
               'Privacy & Security',
               'Control your data and security',
-              () {},
+              () {
+                Navigator.pushNamed(context, '/privacy_security');
+              },
             ),
             _buildSettingItem(
               Icons.language,
               'Language',
               'English',
-              () {},
+              () {
+                Navigator.pushNamed(context, '/language_selection');
+              },
             ),
             _buildSettingItem(
               Icons.attach_money,
               'Currency',
               'USD',
-              () {},
+              () {
+                Navigator.pushNamed(context, '/currency_selection');
+              },
             ),
             const SizedBox(height: 25),
 
@@ -166,7 +176,9 @@ class ProfileScreen extends StatelessWidget {
               Icons.cloud_upload_outlined,
               'Export Data',
               'Download your expense data',
-              () {},
+              () {
+                Navigator.pushNamed(context, '/export_data');
+              },
             ),
             _buildSettingItem(
               Icons.backup,
@@ -355,18 +367,17 @@ class ProfileScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 Navigator.pushReplacementNamed(context, '/');
               }),
-              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
-                Navigator.pushNamed(context, '/statistics');
-              }),
-              const SizedBox(width: 60),
               _buildNavItem(
-                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
-                Navigator.pushNamed(context, '/wallet');
+                  Icons.account_balance, 'Budget', 1, currentIndex, () {
+                Navigator.pushNamed(context, '/budget');
+              }),
+              _buildNavItem(Icons.bar_chart, 'Track', 2, currentIndex, () {
+                Navigator.pushNamed(context, '/statistics');
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
                 // Already on profile
@@ -384,24 +395,27 @@ class ProfileScreen extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-            size: 24,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
               color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              size: 24,
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
