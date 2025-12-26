@@ -499,16 +499,16 @@ class _DashedRectPainter extends CustomPainter {
 
     double x = size.width;
     double y = size.height;
-    
+
     // Draw rounded rect with path
     Path path = Path();
     path.addRRect(RRect.fromRectAndRadius(
-      Rect.fromLTWH(0, 0, x, y), 
+      Rect.fromLTWH(0, 0, x, y),
       const Radius.circular(18), // Match container radius
     ));
 
     Path dashedPath = Path();
-    
+
     // Convert path to dashed path
     for (PathMetric pathMetric in path.computeMetrics()) {
       double distance = 0.0;

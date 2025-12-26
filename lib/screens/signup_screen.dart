@@ -60,6 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.darkGreen,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: AppTheme.darkGreen,
         elevation: 0,
@@ -120,123 +121,139 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             const SizedBox(height: 40),
 
-            // Username
-            const Text(
-              'Username',
-              style: TextStyle(
-                color: AppTheme.textWhite,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _usernameController,
-              style: const TextStyle(color: AppTheme.textWhite),
-              decoration: InputDecoration(
-                hintText: 'johndoe',
-                hintStyle: const TextStyle(color: AppTheme.textGray),
-                filled: true,
-                fillColor: AppTheme.darkGreenCard,
-                prefixIcon:
-                    const Icon(Icons.person_outline, color: AppTheme.textGray),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Email
-            const Text(
-              'Email Address',
-              style: TextStyle(
-                color: AppTheme.textWhite,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              style: const TextStyle(color: AppTheme.textWhite),
-              decoration: InputDecoration(
-                hintText: 'student@university.edu',
-                hintStyle: const TextStyle(color: AppTheme.textGray),
-                filled: true,
-                fillColor: AppTheme.darkGreenCard,
-                prefixIcon:
-                    const Icon(Icons.email_outlined, color: AppTheme.textGray),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Password
-            const Text(
-              'Password',
-              style: TextStyle(
-                color: AppTheme.textWhite,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _passwordController,
-              obscureText: _obscurePassword,
-              style: const TextStyle(color: AppTheme.textWhite),
-              decoration: InputDecoration(
-                hintText: '••••••••',
-                hintStyle:
-                    const TextStyle(color: AppTheme.textGray, fontSize: 20),
-                filled: true,
-                fillColor: AppTheme.darkGreenCard,
-                prefixIcon:
-                    const Icon(Icons.lock_outline, color: AppTheme.textGray),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    color: AppTheme.textGray,
+            // Form with validation
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Username
+                  const Text(
+                    'Username',
+                    style: TextStyle(
+                      color: AppTheme.textWhite,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.red, width: 2),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.red, width: 2),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.red, width: 2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: const [
-                Icon(Icons.error_outline, color: Colors.red, size: 16),
-                SizedBox(width: 8),
-                Text(
-                  'Password must be at least 8 characters',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 12,
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _usernameController,
+                    style: const TextStyle(color: AppTheme.textWhite),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter username';
+                      }
+                      if (value.length < 3) {
+                        return 'Username must be at least 3 characters';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'johndoe',
+                      hintStyle: const TextStyle(color: AppTheme.textGray),
+                      filled: true,
+                      fillColor: AppTheme.darkGreenCard,
+                      prefixIcon: const Icon(Icons.person_outline,
+                          color: AppTheme.textGray),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+
+                  // Email
+                  const Text(
+                    'Email Address',
+                    style: TextStyle(
+                      color: AppTheme.textWhite,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: AppTheme.textWhite),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter email';
+                      }
+                      if (!value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'student@university.edu',
+                      hintStyle: const TextStyle(color: AppTheme.textGray),
+                      filled: true,
+                      fillColor: AppTheme.darkGreenCard,
+                      prefixIcon: const Icon(Icons.email_outlined,
+                          color: AppTheme.textGray),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Password
+                  const Text(
+                    'Password',
+                    style: TextStyle(
+                      color: AppTheme.textWhite,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    style: const TextStyle(color: AppTheme.textWhite),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      if (value.length < 8) {
+                        return 'Password must be at least 8 characters';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: '••••••••',
+                      hintStyle: const TextStyle(
+                          color: AppTheme.textGray, fontSize: 20),
+                      filled: true,
+                      fillColor: AppTheme.darkGreenCard,
+                      prefixIcon: const Icon(Icons.lock_outline,
+                          color: AppTheme.textGray),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: AppTheme.textGray,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 24),
 
@@ -300,7 +317,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.darkGreen),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppTheme.darkGreen),
                         ),
                       )
                     : Row(

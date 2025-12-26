@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../providers/app_provider.dart';
+import '../utils/app_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -27,23 +29,21 @@ class _SplashScreenState extends State<SplashScreen>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeIn),
-      ),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeOutBack),
+        curve: Curves.easeIn,
       ),
     );
 
     _controller.forward();
 
-    // Navigate to onboarding screen after 3 seconds
+    // Navigate after 3 seconds
     Timer(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/onboarding');
+        final provider = Provider.of<AppProvider>(context, listen: false);
+        if (provider.isLoggedIn) {
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          Navigator.pushReplacementNamed(context, '/onboarding');
+        }
       }
     });
   }
@@ -57,81 +57,65 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.darkGreen,
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: ScaleTransition(
-            scale: _scaleAnimation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // App Icon/Logo
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        AppTheme.neonGreen,
-                        AppTheme.neonGreen.withOpacity(0.7),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.neonGreen.withOpacity(0.3),
-                        blurRadius: 30,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.account_balance_wallet,
-                    size: 60,
-                    color: AppTheme.darkGreen,
+      backgroundColor: AppTheme.black,
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(),
+              
+              // App Logo - Piggy bank icon with green background
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: AppTheme.neonGreen,
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: const Icon(
+                  Icons.savings_outlined,
+                  size: 60,
+                  color: AppTheme.black,
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // App Name
+              Text(
+                AppConstants.appName,
+                style: AppTheme.headingLarge.copyWith(
+                  fontSize: 36,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              // Tagline
+              Text(
+                AppConstants.appTagline,
+                style: AppTheme.bodyMedium.copyWith(
+                  fontSize: 16,
+                ),
+              ),
+              
+              const Spacer(),
+              
+              // Version at bottom
+              Padding(
+                padding: const EdgeInsets.only(bottom: 48),
+                child: Text(
+                  AppConstants.appVersion,
+                  style: AppTheme.bodyMedium.copyWith(
+                    fontSize: 14,
+                    color: AppTheme.textLightGray,
                   ),
                 ),
-                const SizedBox(height: 30),
-
-                // App Name
-                const Text(
-                  'BUDGETU',
-                  style: TextStyle(
-                    color: AppTheme.neonGreen,
-                    fontSize: 42,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // Tagline
-                const Text(
-                  'Track Your Expenses',
-                  style: TextStyle(
-                    color: AppTheme.textGray,
-                    fontSize: 16,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 50),
-
-                // Loading Indicator
-                SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      AppTheme.neonGreen.withOpacity(0.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

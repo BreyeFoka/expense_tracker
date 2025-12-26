@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'providers/app_provider.dart';
 import 'screens/category_management_screen.dart';
@@ -9,7 +10,10 @@ import 'screens/new_home_screen.dart';
 import 'screens/new_budget_screen.dart';
 import 'screens/spending_insights_screen.dart';
 import 'screens/onboarding_screen.dart';
-import 'screens/new_add_expense_screen.dart';
+import 'screens/add_expense_calculator_screen.dart';
+import 'screens/review_scan_screen.dart';
+import 'screens/import_momo_screen_new.dart';
+import 'screens/review_transaction_screen_new.dart';
 import 'screens/profile_screen.dart';
 import 'screens/wallet_screen.dart';
 import 'screens/analytics_screen.dart';
@@ -25,8 +29,6 @@ import 'screens/export_data_screen.dart';
 import 'screens/privacy_security_screen.dart';
 import 'screens/edit_profile_screen.dart';
 import 'screens/budget_personalization_screen.dart';
-import 'screens/review_transaction_screen.dart';
-import 'screens/import_momo_screen.dart';
 import 'screens/scan_receipt_screen.dart';
 import 'theme/app_theme.dart';
 
@@ -43,20 +45,19 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.localStorage});
 
   @override
-/*************  ✨ Codeium Command ⭐  *************/
-  /// ****  13e25c58-2054-4492-8164-4a247493296d  ******
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider(localStorage)),
       ],
       child: MaterialApp(
-        title: 'BUDGETU',
+        title: 'BudgetU',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: AppTheme.darkGreen,
           primaryColor: AppTheme.neonGreen,
-          fontFamily: 'Roboto',
+          textTheme: GoogleFonts.interTextTheme(),
+          useMaterial3: true,
         ),
         initialRoute: '/splash',
         routes: {
@@ -66,12 +67,14 @@ class MyApp extends StatelessWidget {
           '/signup': (context) => const SignupScreen(),
           '/forgot_password': (context) => ForgotPasswordScreen(),
           '/email_sent': (context) => const EmailSentScreen(),
-          '/': (context) => const NewHomeScreen(),
+          '/home': (context) => const NewHomeScreen(),  // Main home screen
+          '/': (context) => const NewHomeScreen(),  // Fallback
           '/manage_categories': (context) => const CategoryManagementScreen(),
           '/manage_tags': (context) => const TagManagementScreen(),
           '/statistics': (context) => const SpendingInsightsScreen(),
           '/budget': (context) => const NewBudgetScreen(),
-          '/add_expense': (context) => const NewAddExpenseScreen(),
+          '/add_expense': (context) => const AddExpenseCalculatorScreen(),
+          '/review_scan': (context) => const ReviewScanScreen(),
           '/profile': (context) => const ProfileScreen(),
           '/wallet': (context) => const WalletScreen(),
           '/analytics': (context) => const AnalyticsScreen(),
@@ -84,11 +87,10 @@ class MyApp extends StatelessWidget {
           '/edit_profile': (context) => const EditProfileScreen(),
           '/budget_personalization': (context) =>
               const BudgetPersonalizationScreen(),
-          '/review_transaction': (context) => const ReviewTransactionScreen(),
-          '/import_momo': (context) => const ImportMomoScreen(),
+          '/review_transaction': (context) => const ReviewTransactionScreenNew(),
+          '/import_momo': (context) => const ImportMomoScreenNew(),
           '/scan_receipt': (context) => const ScanReceiptScreen(),
         },
-        // Removed 'home:' since 'initialRoute' is used to define the home route
       ),
     );
   }

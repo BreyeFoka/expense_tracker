@@ -128,11 +128,13 @@ class AppProvider with ChangeNotifier {
   void _saveCategories() {
     storage.setItem(
       'categories',
-      jsonEncode(_categories.map((c) => {
-        'id': c.id,
-        'name': c.name,
-        'isDefault': c.isDefault,
-      }).toList()),
+      jsonEncode(_categories
+          .map((c) => {
+                'id': c.id,
+                'name': c.name,
+                'isDefault': c.isDefault,
+              })
+          .toList()),
     );
   }
 
@@ -155,7 +157,7 @@ class AppProvider with ChangeNotifier {
   }
 
   // === AUTH METHODS ===
-  
+
   Future<bool> login(String email, String password) async {
     // Simulate login - In production, verify against stored credentials
     var userData = storage.getItem('user');
@@ -177,10 +179,10 @@ class AppProvider with ChangeNotifier {
     );
     _isLoggedIn = true;
     _saveUser();
-    
+
     // Initialize default budgets
     _initializeDefaultBudgets();
-    
+
     notifyListeners();
     return true;
   }
@@ -280,7 +282,8 @@ class AppProvider with ChangeNotifier {
   }
 
   // Get total spent by category
-  double getSpentByCategory(String categoryId, {DateTime? start, DateTime? end}) {
+  double getSpentByCategory(String categoryId,
+      {DateTime? start, DateTime? end}) {
     var expenseList = getExpensesByCategory(categoryId);
     if (start != null && end != null) {
       expenseList = expenseList.where((e) {
@@ -294,7 +297,8 @@ class AppProvider with ChangeNotifier {
   // === CATEGORY METHODS ===
 
   void addCategory(ExpenseCategory category) {
-    if (!_categories.any((c) => c.name.toLowerCase() == category.name.toLowerCase())) {
+    if (!_categories
+        .any((c) => c.name.toLowerCase() == category.name.toLowerCase())) {
       _categories.add(category);
       _saveCategories();
       notifyListeners();
@@ -458,14 +462,14 @@ class AppProvider with ChangeNotifier {
 
   Map<String, double> getCategorySpending({DateTime? start, DateTime? end}) {
     Map<String, double> spending = {};
-    
+
     for (var category in _categories) {
       final amount = getSpentByCategory(category.id, start: start, end: end);
       if (amount > 0) {
         spending[category.name] = amount;
       }
     }
-    
+
     return spending;
   }
 
@@ -473,20 +477,21 @@ class AppProvider with ChangeNotifier {
   Map<String, double> getDailySpending() {
     Map<String, double> dailySpending = {};
     final now = DateTime.now();
-    
+
     for (int i = 6; i >= 0; i--) {
       final date = now.subtract(Duration(days: i));
       final dayKey = _getDayName(date.weekday);
-      
-      final dayExpenses = _expenses.where((e) =>
-        e.date.year == date.year &&
-        e.date.month == date.month &&
-        e.date.day == date.day
-      ).toList();
-      
+
+      final dayExpenses = _expenses
+          .where((e) =>
+              e.date.year == date.year &&
+              e.date.month == date.month &&
+              e.date.day == date.day)
+          .toList();
+
       dailySpending[dayKey] = dayExpenses.fold(0.0, (sum, e) => sum + e.amount);
     }
-    
+
     return dailySpending;
   }
 
@@ -502,7 +507,7 @@ class AppProvider with ChangeNotifier {
     _expenses.clear();
     _budgets.clear();
     _settings = AppSettings();
-    
+
     storage.clear();
     notifyListeners();
   }

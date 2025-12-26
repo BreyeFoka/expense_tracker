@@ -45,7 +45,8 @@ class NewHomeScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  provider.currentUser?.name.split(' ')[0] ?? 'User',
+                                  provider.currentUser?.name.split(' ')[0] ??
+                                      'User',
                                   style: TextStyle(
                                     color: AppTheme.textWhite,
                                     fontSize: 28,
@@ -435,8 +436,7 @@ class NewHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryBreakdown(
-      List<Expense> expenses, AppProvider provider) {
+  Widget _buildCategoryBreakdown(List<Expense> expenses, AppProvider provider) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -637,7 +637,7 @@ class NewHomeScreen extends StatelessWidget {
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: SizedBox(
-        height: 65,
+        height: 60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -665,28 +665,30 @@ class NewHomeScreen extends StatelessWidget {
       VoidCallback onTap) {
     final isActive = index == currentIndex;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
                 color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+                size: 22,
               ),
-            ),
-          ],
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
+                  fontSize: 10,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
