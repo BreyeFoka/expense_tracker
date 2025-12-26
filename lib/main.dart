@@ -4,13 +4,15 @@ import 'package:provider/provider.dart';
 
 import 'providers/expense_provider.dart';
 import 'screens/category_management_screen.dart';
-import 'screens/home_screen.dart';
 import 'screens/tag_management_screen.dart';
 import 'screens/new_home_screen.dart';
 import 'screens/new_budget_screen.dart';
 import 'screens/spending_insights_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/new_add_expense_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/wallet_screen.dart';
+import 'screens/analytics_screen.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -43,20 +45,16 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) =>
-              const NewHomeScreen(), // Main entry point, HomeScreen
+          '/': (context) => const NewHomeScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
-          '/manage_categories': (context) =>
-              const CategoryManagementScreen(), // Route for managing categories
-          '/manage_tags': (context) =>
-              const TagManagementScreen(), // Route for managing tags
-          '/statistics': (context) =>
-              const SpendingInsightsScreen(), // Route for statistics
-          '/budget': (context) => const NewBudgetScreen(), // Route for budget
-          '/settings': (context) =>
-              const NewHomeScreen(), // Placeholder - update later
-          '/add_expense': (context) =>
-              const NewAddExpenseScreen(), // Route for adding expense
+          '/manage_categories': (context) => const CategoryManagementScreen(),
+          '/manage_tags': (context) => const TagManagementScreen(),
+          '/statistics': (context) => const SpendingInsightsScreen(),
+          '/budget': (context) => const NewBudgetScreen(),
+          '/add_expense': (context) => const NewAddExpenseScreen(),
+          '/profile': (context) => const ProfileScreen(),
+          '/wallet': (context) => const WalletScreen(),
+          '/analytics': (context) => const AnalyticsScreen(),
         },
         // Removed 'home:' since 'initialRoute' is used to define the home route
       ),

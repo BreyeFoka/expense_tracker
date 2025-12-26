@@ -635,11 +635,19 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavIcon(Icons.home, false),
-              _buildNavIcon(Icons.bar_chart, true),
+              _buildNavItem(Icons.home, 'Home', 0, 1, () {
+                Navigator.pushNamed(context, '/');
+              }),
+              _buildNavItem(Icons.pie_chart, 'Budget', 1, 1, () {
+                Navigator.pushNamed(context, '/budget');
+              }),
               const SizedBox(width: 60),
-              _buildNavIcon(Icons.camera_alt, false),
-              _buildNavIcon(Icons.person, false),
+              _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, 1, () {
+                Navigator.pushNamed(context, '/wallet');
+              }),
+              _buildNavItem(Icons.person, 'Profile', 3, 1, () {
+                Navigator.pushNamed(context, '/profile');
+              }),
             ],
           ),
         ),
@@ -647,11 +655,31 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
     );
   }
 
-  Widget _buildNavIcon(IconData icon, bool isActive) {
-    return Icon(
-      icon,
-      color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
-      size: 26,
+  Widget _buildNavItem(IconData icon, String label, int index, int currentIndex,
+      VoidCallback onTap) {
+    final isActive = index == currentIndex;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
+            size: 24,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: isActive ? AppTheme.neonGreen : AppTheme.textGray,
+              fontSize: 11,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -159,7 +159,7 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/statistics');
+                              Navigator.pushNamed(context, '/analytics');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.textWhite,
@@ -429,11 +429,11 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
                 // Already on budget
               }),
               const SizedBox(width: 60),
-              _buildNavItem(Icons.bar_chart, 'Track', 2, currentIndex, () {
-                Navigator.pushNamed(context, '/statistics');
+              _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
+                Navigator.pushNamed(context, '/wallet');
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
-                Navigator.pushNamed(context, '/settings');
+                Navigator.pushNamed(context, '/profile');
               }),
             ],
           ),

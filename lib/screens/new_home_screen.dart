@@ -177,7 +177,7 @@ class NewHomeScreen extends StatelessWidget {
                         const SizedBox(height: 25),
 
                         // Recent Transactions
-                        _buildRecentTransactions(expenses, provider),
+                        _buildRecentTransactions(expenses, provider, context),
                       ],
                     ),
                   ),
@@ -408,7 +408,7 @@ class NewHomeScreen extends StatelessWidget {
   }
 
   Widget _buildRecentTransactions(
-      List<Expense> expenses, ExpenseProvider provider) {
+      List<Expense> expenses, ExpenseProvider provider, BuildContext context) {
     final recent = expenses.take(3).toList();
 
     return Column(
@@ -426,7 +426,9 @@ class NewHomeScreen extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/wallet');
+              },
               child: const Text(
                 'See all',
                 style: TextStyle(
@@ -542,10 +544,10 @@ class NewHomeScreen extends StatelessWidget {
               const SizedBox(width: 60), // Space for FAB
               _buildNavItem(
                   Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
-                Navigator.pushNamed(context, '/statistics');
+                Navigator.pushNamed(context, '/wallet');
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
-                Navigator.pushNamed(context, '/settings');
+                Navigator.pushNamed(context, '/profile');
               }),
             ],
           ),
