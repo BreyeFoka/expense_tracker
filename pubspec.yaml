@@ -40,6 +40,8 @@ dependencies:
   path_provider: ^2.0.13
   collection: ^1.18.0
   localstorage: ^5.0.0
+  fl_chart: ^1.1.1
+  google_fonts: ^6.3.3
 
 dev_dependencies:
   flutter_test:

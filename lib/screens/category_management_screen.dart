@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/expense_category.dart';
 import '../providers/expense_provider.dart';
 import '../widgets/add_category_dialog.dart';
+import '../theme/app_theme.dart';
 
 // Example for CategoryManagementScreen
 class CategoryManagementScreen extends StatelessWidget {
@@ -13,24 +13,37 @@ class CategoryManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.darkGreen,
       appBar: AppBar(
         title: Text("Manage Categories"),
-        backgroundColor: Colors.indigoAccent, // Themed color similar to your inspirations
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.darkGreen,
+        foregroundColor: AppTheme.textWhite,
+        elevation: 0,
       ),
       body: Consumer<ExpenseProvider>(
         builder: (context, provider, child) {
           return ListView.builder(
+            padding: EdgeInsets.all(16),
             itemCount: provider.categories.length,
             itemBuilder: (context, index) {
               final category = provider.categories[index];
-              return ListTile(
-                title: Text(category.name),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    provider.deleteCategory(category.id);
-                  },
+              return Container(
+                margin: EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: AppTheme.darkGreenCard,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ListTile(
+                  title: Text(
+                    category.name,
+                    style: TextStyle(color: AppTheme.textWhite),
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: AppTheme.dangerRed),
+                    onPressed: () {
+                      provider.deleteCategory(category.id);
+                    },
+                  ),
                 ),
               );
             },
@@ -38,6 +51,7 @@ class CategoryManagementScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppTheme.neonGreen,
         onPressed: () {
           showDialog(
             context: context,
@@ -45,13 +59,13 @@ class CategoryManagementScreen extends StatelessWidget {
               onAdd: (newCategory) {
                 Provider.of<ExpenseProvider>(context, listen: false)
                     .addCategory(newCategory);
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context);
               },
             ),
           );
         },
         tooltip: 'Add New Category',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: AppTheme.darkGreen),
       ),
     );
   }

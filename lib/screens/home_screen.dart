@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/expense_provider.dart';
 import 'add_expense_screen.dart';
-import 'category_management_screen.dart';
-import 'tag_management_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import '../models/expense.dart';
-import '../models/expense_category.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,10 +59,44 @@ class _HomeScreenState extends State<HomeScreen>
                   style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
             ListTile(
+              leading: Icon(Icons.bar_chart, color: Colors.indigoAccent),
+              title: Text('Statistics'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/statistics');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment, color: Colors.indigoAccent),
+              title: Text('Reports'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/reports');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_balance_wallet,
+                  color: Colors.indigoAccent),
+              title: Text('Budget'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/budget');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search, color: Colors.indigoAccent),
+              title: Text('Search & Filter'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/search');
+              },
+            ),
+            Divider(),
+            ListTile(
               leading: Icon(Icons.category, color: Colors.indigoAccent),
               title: Text('Manage Categories'),
               onTap: () {
-                Navigator.pop(context); // This closes the drawer
+                Navigator.pop(context);
                 Navigator.pushNamed(context, '/manage_categories');
               },
             ),
@@ -73,8 +104,17 @@ class _HomeScreenState extends State<HomeScreen>
               leading: Icon(Icons.tag, color: Colors.indigoAccent),
               title: Text('Manage Tags'),
               onTap: () {
-                Navigator.pop(context); // This closes the drawer
+                Navigator.pop(context);
                 Navigator.pushNamed(context, '/manage_tags');
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.settings, color: Colors.indigoAccent),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/settings');
               },
             ),
           ],
@@ -183,12 +223,12 @@ class _HomeScreenState extends State<HomeScreen>
                   itemBuilder: (context, index) {
                     Expense expense = entry.value[index];
                     return ListTile(
-                      leading:
-                          Icon(Icons.monetization_on, color: Colors.indigoAccent),
+                      leading: Icon(Icons.monetization_on,
+                          color: Colors.indigoAccent),
                       title: Text(
                           "${expense.payee} - \$${expense.amount.toStringAsFixed(2)}"),
-                      subtitle: Text(DateFormat('MMM dd, yyyy')
-                          .format(expense.date)),
+                      subtitle:
+                          Text(DateFormat('MMM dd, yyyy').format(expense.date)),
                     );
                   },
                 ),

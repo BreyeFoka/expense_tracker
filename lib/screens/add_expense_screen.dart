@@ -150,7 +150,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 // Helper method to build the category dropdown
   Widget buildCategoryDropdown(ExpenseProvider provider) {
     return DropdownButtonFormField<String>(
-      value: _selectedCategoryId,
+      initialValue: _selectedCategoryId,
       onChanged: (newValue) {
         if (newValue == 'New') {
           showDialog(
@@ -188,7 +188,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 // Helper method to build the tag dropdown
   Widget buildTagDropdown(ExpenseProvider provider) {
     return DropdownButtonFormField<String>(
-      value: _selectedTagId,
+      initialValue: _selectedTagId,
       onChanged: (newValue) {
         if (newValue == 'New') {
           showDialog(
