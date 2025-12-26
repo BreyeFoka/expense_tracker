@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/expense_provider.dart';
 import '../theme/app_theme.dart';
-import '../models/expense.dart';
 
 class NewBudgetScreen extends StatefulWidget {
   const NewBudgetScreen({super.key});
@@ -425,11 +422,12 @@ class _NewBudgetScreenState extends State<NewBudgetScreen> {
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 Navigator.pop(context);
               }),
-              _buildNavItem(Icons.pie_chart, 'Budget', 1, currentIndex, () {
-                // Already on budget
+              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
+                Navigator.pushNamed(context, '/statistics');
               }),
               const SizedBox(width: 60),
-              _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
+              _buildNavItem(
+                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
                 Navigator.pushNamed(context, '/wallet');
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {

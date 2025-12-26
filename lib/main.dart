@@ -13,6 +13,7 @@ import 'screens/new_add_expense_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/wallet_screen.dart';
 import 'screens/analytics_screen.dart';
+import 'screens/splash_screen.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -43,8 +44,9 @@ class MyApp extends StatelessWidget {
           primaryColor: AppTheme.neonGreen,
           fontFamily: 'Roboto',
         ),
-        initialRoute: '/',
+        initialRoute: '/splash',
         routes: {
+          '/splash': (context) => const SplashScreen(),
           '/': (context) => const NewHomeScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
           '/manage_categories': (context) => const CategoryManagementScreen(),

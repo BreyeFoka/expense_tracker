@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/expense_provider.dart';
 import '../theme/app_theme.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -362,11 +360,12 @@ class ProfileScreen extends StatelessWidget {
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 Navigator.pushReplacementNamed(context, '/');
               }),
-              _buildNavItem(Icons.pie_chart, 'Budget', 1, currentIndex, () {
-                Navigator.pushReplacementNamed(context, '/budget');
+              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
+                Navigator.pushNamed(context, '/statistics');
               }),
               const SizedBox(width: 60),
-              _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
+              _buildNavItem(
+                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
                 Navigator.pushNamed(context, '/wallet');
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
@@ -379,9 +378,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index, int currentIndex, VoidCallback onTap) {
+  Widget _buildNavItem(IconData icon, String label, int index, int currentIndex,
+      VoidCallback onTap) {
     final isActive = index == currentIndex;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Column(

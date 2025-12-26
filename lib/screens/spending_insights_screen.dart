@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../providers/expense_provider.dart';
 import '../theme/app_theme.dart';
-import '../models/expense.dart';
 
 class SpendingInsightsScreen extends StatefulWidget {
   const SpendingInsightsScreen({super.key});
@@ -41,273 +38,69 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
           ),
         ],
       ),
-      body: Consumer<ExpenseProvider>(
-        builder: (context, provider, child) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Period Tabs
+            Row(
               children: [
-                // Period Selector
-                Row(
-                  children: [
-                    _buildPeriodChip('Weekly', true),
-                    const SizedBox(width: 10),
-                    _buildPeriodChip('Monthly', false),
-                    const SizedBox(width: 10),
-                    _buildPeriodChip('Semester', false),
-                  ],
-                ),
-                const SizedBox(height: 25),
+                _buildPeriodTab('Weekly'),
+                const SizedBox(width: 12),
+                _buildPeriodTab('Monthly'),
+                const SizedBox(width: 12),
+                _buildPeriodTab('Semester'),
+              ],
+            ),
+            const SizedBox(height: 20),
 
-                // Total Spent Card
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: AppTheme.darkGreenCard,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            // Total Spent Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppTheme.darkGreenCard,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         'TOTAL SPENT',
                         style: TextStyle(
                           color: AppTheme.textGray,
-                          fontSize: 12,
-                          letterSpacing: 1.2,
+                          fontSize: 11,
+                          letterSpacing: 1.5,
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            '\$450.00',
-                            style: TextStyle(
-                              color: AppTheme.textWhite,
-                              fontSize: 42,
-                              fontWeight: FontWeight.bold,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.neonGreen.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.trending_down,
+                              color: AppTheme.neonGreen,
+                              size: 14,
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: AppTheme.neonGreen.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: const [
-                                Icon(Icons.trending_down,
-                                    color: AppTheme.neonGreen, size: 16),
-                                SizedBox(width: 4),
-                                Text(
-                                  '-12% vs last week',
-                                  style: TextStyle(
-                                    color: AppTheme.neonGreen,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      RichText(
-                        text: const TextSpan(
-                          style: TextStyle(fontSize: 14),
-                          children: [
-                            TextSpan(
-                              text: 'You are ',
-                              style: TextStyle(color: AppTheme.textGray),
-                            ),
-                            TextSpan(
-                              text: '\$50 under budget',
+                            SizedBox(width: 4),
+                            Text(
+                              '-12% vs last week',
                               style: TextStyle(
                                 color: AppTheme.neonGreen,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' this week.',
-                              style: TextStyle(color: AppTheme.textGray),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-
-                // Spending Trend
-                const Text(
-                  'Spending Trend',
-                  style: TextStyle(
-                    color: AppTheme.textWhite,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 15),
-
-                // Bar Chart Card
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.darkGreenCard,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Daily Activity',
-                            style: TextStyle(
-                              color: AppTheme.textWhite,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: const [
-                                Text(
-                                  'Details',
-                                  style: TextStyle(
-                                    color: AppTheme.neonGreen,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                SizedBox(width: 4),
-                                Icon(Icons.arrow_forward_ios,
-                                    color: AppTheme.neonGreen, size: 12),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                        height: 180,
-                        child: BarChart(
-                          BarChartData(
-                            alignment: BarChartAlignment.spaceAround,
-                            maxY: 120,
-                            barTouchData: BarTouchData(
-                              touchTooltipData: BarTouchTooltipData(
-                                getTooltipItem:
-                                    (group, groupIndex, rod, rodIndex) {
-                                  return BarTooltipItem(
-                                    '\$${rod.toY.toInt()}',
-                                    const TextStyle(
-                                      color: AppTheme.darkGreen,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            titlesData: FlTitlesData(
-                              show: true,
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: (value, meta) {
-                                    const days = [
-                                      'M',
-                                      'T',
-                                      'W',
-                                      'T',
-                                      'F',
-                                      'S',
-                                      'S'
-                                    ];
-                                    return Text(
-                                      days[value.toInt()],
-                                      style: const TextStyle(
-                                        color: AppTheme.textGray,
-                                        fontSize: 12,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              leftTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              topTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              rightTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                            ),
-                            gridData: FlGridData(show: false),
-                            borderData: FlBorderData(show: false),
-                            barGroups: [
-                              _buildBarGroup(0, 40, false),
-                              _buildBarGroup(1, 60, false),
-                              _buildBarGroup(2, 85, false),
-                              _buildBarGroup(3, 70, false),
-                              _buildBarGroup(4, 112, true),
-                              _buildBarGroup(5, 50, false),
-                              _buildBarGroup(6, 45, false),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Savings Opportunity Card
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.darkGreenCard,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppTheme.neonGreen.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.savings,
-                          color: AppTheme.neonGreen,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Savings Opportunity',
-                              style: TextStyle(
-                                color: AppTheme.textWhite,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              'You\'ve spent 20% less on coffee this week! Keep it up to save an extra \$15 by Sunday.',
-                              style: TextStyle(
-                                color: AppTheme.textGray,
-                                fontSize: 13,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -315,162 +108,416 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 25),
-
-                // Top Categories
-                const Text(
-                  'Top Categories',
-                  style: TextStyle(
-                    color: AppTheme.textWhite,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 15),
-
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.darkGreenCard,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      // Donut Chart
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: Stack(
-                          children: [
-                            PieChart(
-                              PieChartData(
-                                sectionsSpace: 2,
-                                centerSpaceRadius: 35,
-                                sections: [
-                                  PieChartSectionData(
-                                    value: 40,
-                                    color: AppTheme.neonGreen,
-                                    radius: 15,
-                                    showTitle: false,
-                                  ),
-                                  PieChartSectionData(
-                                    value: 25,
-                                    color: AppTheme.transportBlue,
-                                    radius: 15,
-                                    showTitle: false,
-                                  ),
-                                  PieChartSectionData(
-                                    value: 20,
-                                    color: AppTheme.textGray,
-                                    radius: 15,
-                                    showTitle: false,
-                                  ),
-                                  PieChartSectionData(
-                                    value: 15,
-                                    color: AppTheme.foodOrange,
-                                    radius: 15,
-                                    showTitle: false,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Text(
-                                    'Top',
-                                    style: TextStyle(
-                                      color: AppTheme.textGray,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Food',
-                                    style: TextStyle(
-                                      color: AppTheme.neonGreen,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            _buildCategoryItem(
-                                'Food', '\$180', AppTheme.neonGreen),
-                            const SizedBox(height: 10),
-                            _buildCategoryItem(
-                                'Books', '\$112', AppTheme.transportBlue),
-                            const SizedBox(height: 10),
-                            _buildCategoryItem(
-                                'Transport', '\$90', AppTheme.textGray),
-                            const SizedBox(height: 10),
-                            _buildCategoryItem(
-                                'Others', '\$68', AppTheme.foodOrange),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-
-                // Top Spenders
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Top Spenders',
-                      style: TextStyle(
-                        color: AppTheme.textWhite,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    '\$450.00',
+                    style: TextStyle(
+                      color: AppTheme.textWhite,
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      height: 1.1,
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'View all',
+                  ),
+                  const SizedBox(height: 8),
+                  RichText(
+                    text: const TextSpan(
+                      style: TextStyle(fontSize: 13, height: 1.3),
+                      children: [
+                        TextSpan(
+                          text: 'You are ',
+                          style: TextStyle(color: AppTheme.textGray),
+                        ),
+                        TextSpan(
+                          text: '\$50 under budget',
+                          style: TextStyle(
+                            color: AppTheme.neonGreen,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' this week.',
+                          style: TextStyle(color: AppTheme.textGray),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            // Spending Trend
+            const Text(
+              'Spending Trend',
+              style: TextStyle(
+                color: AppTheme.textWhite,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Daily Activity Bar Chart
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppTheme.darkGreenCard,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Daily Activity',
                         style: TextStyle(
-                          color: AppTheme.neonGreen,
+                          color: AppTheme.textGray,
                           fontSize: 14,
                         ),
                       ),
+                      TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(0, 0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Row(
+                          children: const [
+                            Text(
+                              'Details',
+                              style: TextStyle(
+                                color: AppTheme.neonGreen,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SizedBox(width: 4),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppTheme.neonGreen,
+                              size: 12,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 200,
+                    child: BarChart(
+                      BarChartData(
+                        alignment: BarChartAlignment.spaceAround,
+                        maxY: 300,
+                        barTouchData: BarTouchData(
+                          enabled: true,
+                          touchTooltipData: BarTouchTooltipData(
+                            tooltipBorder:
+                                const BorderSide(color: AppTheme.neonGreen),
+                            tooltipPadding: const EdgeInsets.all(8),
+                            getTooltipColor: (group) => AppTheme.neonGreen,
+                            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                              return BarTooltipItem(
+                                '\$${rod.toY.toInt()}',
+                                const TextStyle(
+                                  color: AppTheme.darkGreen,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        titlesData: FlTitlesData(
+                          show: true,
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              getTitlesWidget: (value, meta) {
+                                const days = [
+                                  'M',
+                                  'T',
+                                  'W',
+                                  'T',
+                                  'F',
+                                  'S',
+                                  'S'
+                                ];
+                                if (value.toInt() >= 0 &&
+                                    value.toInt() < days.length) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      days[value.toInt()],
+                                      style: TextStyle(
+                                        color: value.toInt() == 4
+                                            ? AppTheme.neonGreen
+                                            : AppTheme.textGray,
+                                        fontSize: 12,
+                                        fontWeight: value.toInt() == 4
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return const Text('');
+                              },
+                            ),
+                          ),
+                          leftTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          topTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          rightTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                        ),
+                        borderData: FlBorderData(show: false),
+                        gridData: const FlGridData(show: false),
+                        barGroups: [
+                          _buildBarGroup(0, 45),
+                          _buildBarGroup(1, 65),
+                          _buildBarGroup(2, 155),
+                          _buildBarGroup(3, 85),
+                          _buildBarGroup(4, 250), // Friday - highlighted
+                          _buildBarGroup(5, 75),
+                          _buildBarGroup(6, 68),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Savings Opportunity Card
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppTheme.darkGreenCard,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.neonGreen.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.savings,
+                      color: AppTheme.neonGreen,
+                      size: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Savings Opportunity',
+                          style: TextStyle(
+                            color: AppTheme.textWhite,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        RichText(
+                          text: const TextSpan(
+                            style: TextStyle(fontSize: 13, height: 1.4),
+                            children: [
+                              TextSpan(
+                                text: "You've spent ",
+                                style: TextStyle(color: AppTheme.textGray),
+                              ),
+                              TextSpan(
+                                text: "20% less",
+                                style: TextStyle(
+                                  color: AppTheme.neonGreen,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    " on coffee this week! Keep it up to save an extra \$15 by Sunday.",
+                                style: TextStyle(color: AppTheme.textGray),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            // Top Categories
+            const Text(
+              'Top Categories',
+              style: TextStyle(
+                color: AppTheme.textWhite,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppTheme.darkGreenCard,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  // Donut Chart
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Stack(
+                      children: [
+                        PieChart(
+                          PieChartData(
+                            sectionsSpace: 2,
+                            centerSpaceRadius: 35,
+                            sections: [
+                              PieChartSectionData(
+                                value: 180,
+                                color: AppTheme.neonGreen,
+                                radius: 20,
+                                title: '',
+                              ),
+                              PieChartSectionData(
+                                value: 112,
+                                color: AppTheme.booksBlue,
+                                radius: 20,
+                                title: '',
+                              ),
+                              PieChartSectionData(
+                                value: 90,
+                                color: AppTheme.transportBlue.withOpacity(0.6),
+                                radius: 20,
+                                title: '',
+                              ),
+                              PieChartSectionData(
+                                value: 68,
+                                color: AppTheme.textGray.withOpacity(0.3),
+                                radius: 20,
+                                title: '',
+                              ),
+                            ],
+                          ),
+                        ),
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Top',
+                                style: TextStyle(
+                                  color: AppTheme.textGray,
+                                  fontSize: 11,
+                                ),
+                              ),
+                              Text(
+                                'Food',
+                                style: TextStyle(
+                                  color: AppTheme.neonGreen,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 30),
+                  // Category List
+                  Expanded(
+                    child: Column(
+                      children: [
+                        _buildCategoryItem('Food', 180, AppTheme.neonGreen),
+                        const SizedBox(height: 12),
+                        _buildCategoryItem('Books', 112, AppTheme.booksBlue),
+                        const SizedBox(height: 12),
+                        _buildCategoryItem('Transport', 90,
+                            AppTheme.transportBlue.withOpacity(0.6)),
+                        const SizedBox(height: 12),
+                        _buildCategoryItem(
+                            'Others', 68, AppTheme.textGray.withOpacity(0.3)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            // Top Spenders
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Top Spenders',
+                  style: TextStyle(
+                    color: AppTheme.textWhite,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 10),
-
-                _buildSpenderItem('Campus Burger', 'Yesterday • Food',
-                    Icons.restaurant, AppTheme.foodOrange, '-\$24.50'),
-                const SizedBox(height: 12),
-                _buildSpenderItem(
-                    'University Bookstore',
-                    'Tue, Oct 24 • Education',
-                    Icons.school,
-                    AppTheme.transportBlue,
-                    '-\$85.00'),
-                const SizedBox(height: 12),
-                _buildSpenderItem(
-                    'Netflix Subscription',
-                    'Mon, Oct 23 • Entertainment',
-                    Icons.movie,
-                    AppTheme.entertainmentPurple,
-                    '-\$15.99'),
-
-                const SizedBox(height: 100),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'View all',
+                    style: TextStyle(
+                      color: AppTheme.neonGreen,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
               ],
             ),
-          );
-        },
+            const SizedBox(height: 10),
+
+            _buildSpenderItem(
+              icon: Icons.restaurant,
+              color: AppTheme.foodOrange,
+              name: 'Campus Burger',
+              date: 'Yesterday',
+              category: 'Food',
+              amount: 24.50,
+            ),
+            _buildSpenderItem(
+              icon: Icons.menu_book,
+              color: AppTheme.booksBlue,
+              name: 'University Bookstore',
+              date: 'Tue, Oct 24',
+              category: 'Education',
+              amount: 85.00,
+            ),
+            _buildSpenderItem(
+              icon: Icons.movie,
+              color: AppTheme.entertainmentPurple,
+              name: 'Netflix Subscription',
+              date: 'Mon, Oct 23',
+              category: 'Entertainment',
+              amount: 15.99,
+            ),
+            const SizedBox(height: 100),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -481,46 +528,46 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
         child: const Icon(Icons.add, color: AppTheme.darkGreen, size: 32),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNav(context),
+      bottomNavigationBar: _buildBottomNav(context, 1),
     );
   }
 
-  Widget _buildPeriodChip(String label, bool isActive) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _selectedPeriod = label;
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: isActive ? AppTheme.neonGreen : AppTheme.darkGreenCard,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: Text(
-              label,
-              style: TextStyle(
-                color: isActive ? AppTheme.darkGreen : AppTheme.textGray,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+  Widget _buildPeriodTab(String label) {
+    final isSelected = _selectedPeriod == label;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedPeriod = label;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.neonGreen : AppTheme.darkGreenCard,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? AppTheme.darkGreen : AppTheme.textGray,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
     );
   }
 
-  BarChartGroupData _buildBarGroup(int x, double y, bool isHighlighted) {
+  BarChartGroupData _buildBarGroup(int x, double value) {
+    final isHighlighted = x == 4; // Friday
     return BarChartGroupData(
       x: x,
       barRods: [
         BarChartRodData(
-          toY: y,
-          color: isHighlighted ? AppTheme.neonGreen : AppTheme.darkGreen,
+          toY: value,
+          color: isHighlighted
+              ? AppTheme.neonGreen
+              : AppTheme.neonGreen.withOpacity(0.3),
           width: 28,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(6),
@@ -532,7 +579,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
     );
   }
 
-  Widget _buildCategoryItem(String name, String amount, Color color) {
+  Widget _buildCategoryItem(String name, double amount, Color color) {
     return Row(
       children: [
         Container(
@@ -543,7 +590,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Expanded(
           child: Text(
             name,
@@ -554,20 +601,27 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
           ),
         ),
         Text(
-          amount,
+          '\$${amount.toInt()}',
           style: const TextStyle(
             color: AppTheme.textWhite,
             fontSize: 14,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildSpenderItem(
-      String name, String subtitle, IconData icon, Color color, String amount) {
+  Widget _buildSpenderItem({
+    required IconData icon,
+    required Color color,
+    required String name,
+    required String date,
+    required String category,
+    required double amount,
+  }) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.darkGreenCard,
@@ -583,7 +637,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
             ),
             child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -596,9 +650,9 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Text(
-                  subtitle,
+                  '$date • $category',
                   style: const TextStyle(
                     color: AppTheme.textGray,
                     fontSize: 12,
@@ -608,7 +662,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
             ),
           ),
           Text(
-            amount,
+            '-\$${amount.toStringAsFixed(2)}',
             style: const TextStyle(
               color: AppTheme.textWhite,
               fontSize: 16,
@@ -620,7 +674,7 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
     );
   }
 
-  Widget _buildBottomNav(BuildContext context) {
+  Widget _buildBottomNav(BuildContext context, int currentIndex) {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.darkGreenCard,
@@ -635,17 +689,18 @@ class _SpendingInsightsScreenState extends State<SpendingInsightsScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(Icons.home, 'Home', 0, 1, () {
-                Navigator.pushNamed(context, '/');
+              _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
+                Navigator.pushReplacementNamed(context, '/');
               }),
-              _buildNavItem(Icons.pie_chart, 'Budget', 1, 1, () {
-                Navigator.pushNamed(context, '/budget');
+              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
+                // Already on insights
               }),
               const SizedBox(width: 60),
-              _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, 1, () {
+              _buildNavItem(
+                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
                 Navigator.pushNamed(context, '/wallet');
               }),
-              _buildNavItem(Icons.person, 'Profile', 3, 1, () {
+              _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
                 Navigator.pushNamed(context, '/profile');
               }),
             ],

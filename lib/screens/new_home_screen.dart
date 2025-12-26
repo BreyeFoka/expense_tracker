@@ -4,7 +4,6 @@ import 'package:fl_chart/fl_chart.dart';
 import '../providers/expense_provider.dart';
 import '../theme/app_theme.dart';
 import '../models/expense.dart';
-import 'package:intl/intl.dart';
 
 class NewHomeScreen extends StatelessWidget {
   const NewHomeScreen({super.key});
@@ -538,8 +537,8 @@ class NewHomeScreen extends StatelessWidget {
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 // Already on home
               }),
-              _buildNavItem(Icons.pie_chart, 'Budget', 1, currentIndex, () {
-                Navigator.pushNamed(context, '/budget');
+              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
+                Navigator.pushNamed(context, '/statistics');
               }),
               const SizedBox(width: 60), // Space for FAB
               _buildNavItem(

@@ -38,7 +38,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Consumer<ExpenseProvider>(
           builder: (context, provider, child) {
-            final totalExpenses = provider.expenses.fold(0.0, (sum, e) => sum + e.amount);
+            final totalExpenses =
+                provider.expenses.fold(0.0, (sum, e) => sum + e.amount);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,8 +180,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           sideTitles: SideTitles(
                             showTitles: true,
                             getTitlesWidget: (value, meta) {
-                              const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                              if (value.toInt() >= 0 && value.toInt() < days.length) {
+                              const days = [
+                                'Mon',
+                                'Tue',
+                                'Wed',
+                                'Thu',
+                                'Fri',
+                                'Sat',
+                                'Sun'
+                              ];
+                              if (value.toInt() >= 0 &&
+                                  value.toInt() < days.length) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
@@ -255,10 +265,14 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                _buildCategoryAnalysis('Food', 245.50, AppTheme.foodOrange, 0.35),
-                _buildCategoryAnalysis('Transport', 180.00, AppTheme.transportBlue, 0.25),
-                _buildCategoryAnalysis('Entertainment', 150.00, AppTheme.entertainmentPurple, 0.20),
-                _buildCategoryAnalysis('Books', 120.00, AppTheme.booksBlue, 0.15),
+                _buildCategoryAnalysis(
+                    'Food', 245.50, AppTheme.foodOrange, 0.35),
+                _buildCategoryAnalysis(
+                    'Transport', 180.00, AppTheme.transportBlue, 0.25),
+                _buildCategoryAnalysis('Entertainment', 150.00,
+                    AppTheme.entertainmentPurple, 0.20),
+                _buildCategoryAnalysis(
+                    'Books', 120.00, AppTheme.booksBlue, 0.15),
                 const SizedBox(height: 25),
 
                 // Spending Patterns
@@ -423,7 +437,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildCategoryAnalysis(String name, double amount, Color color, double percentage) {
+  Widget _buildCategoryAnalysis(
+      String name, double amount, Color color, double percentage) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -492,7 +507,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildPatternCard(String label, String value, IconData icon, Color color) {
+  Widget _buildPatternCard(
+      String label, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

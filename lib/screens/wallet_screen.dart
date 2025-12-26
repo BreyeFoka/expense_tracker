@@ -13,7 +13,6 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
-  String _filterCategory = 'All';
   String _sortBy = 'date';
 
   @override
@@ -246,7 +245,8 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  Widget _buildTransactionItem(Expense expense, String categoryName, ExpenseProvider provider) {
+  Widget _buildTransactionItem(
+      Expense expense, String categoryName, ExpenseProvider provider) {
     IconData icon;
     Color color;
 
@@ -348,7 +348,8 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  void _showTransactionDetails(Expense expense, String categoryName, IconData icon, Color color) {
+  void _showTransactionDetails(
+      Expense expense, String categoryName, IconData icon, Color color) {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppTheme.darkGreenCard,
@@ -397,7 +398,8 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
             const SizedBox(height: 20),
             _buildDetailRow('Category', categoryName),
-            _buildDetailRow('Date', DateFormat('MMM dd, yyyy').format(expense.date)),
+            _buildDetailRow(
+                'Date', DateFormat('MMM dd, yyyy').format(expense.date)),
             _buildDetailRow('Time', DateFormat('h:mm a').format(expense.date)),
             if (expense.note.isNotEmpty) _buildDetailRow('Note', expense.note),
             const SizedBox(height: 20),
@@ -570,11 +572,12 @@ class _WalletScreenState extends State<WalletScreen> {
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 Navigator.pushReplacementNamed(context, '/');
               }),
-              _buildNavItem(Icons.pie_chart, 'Budget', 1, currentIndex, () {
-                Navigator.pushReplacementNamed(context, '/budget');
+              _buildNavItem(Icons.bar_chart, 'Insights', 1, currentIndex, () {
+                Navigator.pushNamed(context, '/statistics');
               }),
               const SizedBox(width: 60),
-              _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
+              _buildNavItem(
+                  Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
                 // Already on wallet
               }),
               _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {
@@ -587,9 +590,10 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index, int currentIndex, VoidCallback onTap) {
+  Widget _buildNavItem(IconData icon, String label, int index, int currentIndex,
+      VoidCallback onTap) {
     final isActive = index == currentIndex;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Column(
