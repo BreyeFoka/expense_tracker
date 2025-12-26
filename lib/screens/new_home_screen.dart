@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../providers/expense_provider.dart';
+import '../providers/app_provider.dart';
 import '../theme/app_theme.dart';
 import '../models/expense.dart';
 
@@ -13,11 +13,11 @@ class NewHomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.darkGreen,
       body: SafeArea(
-        child: Consumer<ExpenseProvider>(
+        child: Consumer<AppProvider>(
           builder: (context, provider, child) {
             final expenses = provider.expenses;
-            final budget = 1000.0;
-            final spent = expenses.fold(0.0, (sum, e) => sum + e.amount);
+            final budget = provider.getTotalBudget();
+            final spent = provider.getTotalSpent();
             final remaining = budget - spent;
             final dailyLimit = 25.0;
 
@@ -35,7 +35,7 @@ class NewHomeScreen extends StatelessWidget {
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   'Welcome back,',
                                   style: TextStyle(
@@ -45,7 +45,7 @@ class NewHomeScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Alex',
+                                  provider.currentUser?.name.split(' ')[0] ?? 'User',
                                   style: TextStyle(
                                     color: AppTheme.textWhite,
                                     fontSize: 28,
@@ -436,7 +436,7 @@ class NewHomeScreen extends StatelessWidget {
   }
 
   Widget _buildCategoryBreakdown(
-      List<Expense> expenses, ExpenseProvider provider) {
+      List<Expense> expenses, AppProvider provider) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -519,7 +519,7 @@ class NewHomeScreen extends StatelessWidget {
   }
 
   Widget _buildRecentTransactions(
-      List<Expense> expenses, ExpenseProvider provider, BuildContext context) {
+      List<Expense> expenses, AppProvider provider, BuildContext context) {
     final recent = expenses.take(3).toList();
 
     return Column(
@@ -648,7 +648,8 @@ class NewHomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/statistics');
             }),
             const SizedBox(width: 40), // Space for FAB
-            _buildNavItem(Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
+            _buildNavItem(
+                Icons.account_balance_wallet, 'Wallet', 2, currentIndex, () {
               Navigator.pushNamed(context, '/wallet');
             }),
             _buildNavItem(Icons.person, 'Profile', 3, currentIndex, () {

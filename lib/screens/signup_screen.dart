@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../providers/app_provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -9,11 +11,50 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _agreeToTerms = false;
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignup() async {
+    if (!_agreeToTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please accept Terms and Privacy Policy'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+
+      final provider = Provider.of<AppProvider>(context, listen: false);
+      await provider.signup(
+        _usernameController.text.trim(),
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      setState(() => _isLoading = false);
+
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +138,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 hintStyle: const TextStyle(color: AppTheme.textGray),
                 filled: true,
                 fillColor: AppTheme.darkGreenCard,
-                prefixIcon: const Icon(Icons.person_outline, color: AppTheme.textGray),
+                prefixIcon:
+                    const Icon(Icons.person_outline, color: AppTheme.textGray),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -125,7 +167,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 hintStyle: const TextStyle(color: AppTheme.textGray),
                 filled: true,
                 fillColor: AppTheme.darkGreenCard,
-                prefixIcon: const Icon(Icons.email_outlined, color: AppTheme.textGray),
+                prefixIcon:
+                    const Icon(Icons.email_outlined, color: AppTheme.textGray),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -150,10 +193,12 @@ class _SignupScreenState extends State<SignupScreen> {
               style: const TextStyle(color: AppTheme.textWhite),
               decoration: InputDecoration(
                 hintText: '••••••••',
-                hintStyle: const TextStyle(color: AppTheme.textGray, fontSize: 20),
+                hintStyle:
+                    const TextStyle(color: AppTheme.textGray, fontSize: 20),
                 filled: true,
                 fillColor: AppTheme.darkGreenCard,
-                prefixIcon: const Icon(Icons.lock_outline, color: AppTheme.textGray),
+                prefixIcon:
+                    const Icon(Icons.lock_outline, color: AppTheme.textGray),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -240,9 +285,7 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/');
-                },
+                onPressed: _isLoading ? null : _handleSignup,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.neonGreen,
                   foregroundColor: AppTheme.darkGreen,
@@ -251,20 +294,29 @@ class _SignupScreenState extends State<SignupScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Create Account',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.darkGreen),
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            'Create Account',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(Icons.arrow_forward, size: 20),
+                        ],
                       ),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, size: 20),
-                  ],
-                ),
               ),
             ),
             const SizedBox(height: 32),
@@ -355,13 +407,5 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }

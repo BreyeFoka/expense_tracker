@@ -372,8 +372,8 @@ class ProfileScreen extends StatelessWidget {
               _buildNavItem(Icons.home, 'Home', 0, currentIndex, () {
                 Navigator.pushReplacementNamed(context, '/');
               }),
-              _buildNavItem(
-                  Icons.account_balance, 'Budget', 1, currentIndex, () {
+              _buildNavItem(Icons.account_balance, 'Budget', 1, currentIndex,
+                  () {
                 Navigator.pushNamed(context, '/budget');
               }),
               _buildNavItem(Icons.bar_chart, 'Track', 2, currentIndex, () {

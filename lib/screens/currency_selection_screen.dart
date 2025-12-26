@@ -5,7 +5,8 @@ class CurrencySelectionScreen extends StatefulWidget {
   const CurrencySelectionScreen({super.key});
 
   @override
-  State<CurrencySelectionScreen> createState() => _CurrencySelectionScreenState();
+  State<CurrencySelectionScreen> createState() =>
+      _CurrencySelectionScreenState();
 }
 
 class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
@@ -94,10 +95,10 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                   ),
                   const SizedBox(height: 12),
                   ...popularCurrencies.map((currency) => _buildCurrencyTile(
-                    currency['flag']!,
-                    currency['code']!,
-                    currency['name']!,
-                  )),
+                        currency['flag']!,
+                        currency['code']!,
+                        currency['name']!,
+                      )),
                   const SizedBox(height: 20),
                   Center(
                     child: TextButton(

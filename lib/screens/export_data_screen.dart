@@ -54,7 +54,6 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                 _buildRangeOption('Last 6 Months'),
                 _buildRangeOption('This Year'),
                 _buildRangeOption('All Time'),
-
                 const SizedBox(height: 32),
                 const Text(
                   'Select Format',
@@ -90,7 +89,8 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                 // Export data
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Exporting data as $selectedFormat for $selectedRange'),
+                    content: Text(
+                        'Exporting data as $selectedFormat for $selectedRange'),
                     backgroundColor: AppTheme.neonGreen,
                   ),
                 );

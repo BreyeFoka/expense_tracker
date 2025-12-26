@@ -20,7 +20,8 @@ class ForgotPasswordScreen extends StatelessWidget {
               color: AppTheme.darkGreenCard,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.arrow_back, color: AppTheme.textWhite, size: 20),
+            child: const Icon(Icons.arrow_back,
+                color: AppTheme.textWhite, size: 20),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -83,7 +84,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                 hintStyle: const TextStyle(color: AppTheme.textGray),
                 filled: true,
                 fillColor: AppTheme.darkGreenCard,
-                prefixIcon: const Icon(Icons.email_outlined, color: AppTheme.textGray),
+                prefixIcon:
+                    const Icon(Icons.email_outlined, color: AppTheme.textGray),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide.none,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/expense_provider.dart';
+import 'providers/app_provider.dart';
 import 'screens/category_management_screen.dart';
 import 'screens/tag_management_screen.dart';
 import 'screens/new_home_screen.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ExpenseProvider(localStorage)),
+        ChangeNotifierProvider(create: (_) => AppProvider(localStorage)),
       ],
       child: MaterialApp(
         title: 'BUDGETU',
@@ -77,11 +77,13 @@ class MyApp extends StatelessWidget {
           '/analytics': (context) => const AnalyticsScreen(),
           '/currency_selection': (context) => const CurrencySelectionScreen(),
           '/language_selection': (context) => const LanguageSelectionScreen(),
-          '/notifications_settings': (context) => const NotificationsSettingsScreen(),
+          '/notifications_settings': (context) =>
+              const NotificationsSettingsScreen(),
           '/export_data': (context) => const ExportDataScreen(),
           '/privacy_security': (context) => const PrivacySecurityScreen(),
           '/edit_profile': (context) => const EditProfileScreen(),
-          '/budget_personalization': (context) => const BudgetPersonalizationScreen(),
+          '/budget_personalization': (context) =>
+              const BudgetPersonalizationScreen(),
           '/review_transaction': (context) => const ReviewTransactionScreen(),
           '/import_momo': (context) => const ImportMomoScreen(),
           '/scan_receipt': (context) => const ScanReceiptScreen(),

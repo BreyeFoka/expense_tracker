@@ -5,10 +5,12 @@ class NotificationsSettingsScreen extends StatefulWidget {
   const NotificationsSettingsScreen({super.key});
 
   @override
-  State<NotificationsSettingsScreen> createState() => _NotificationsSettingsScreenState();
+  State<NotificationsSettingsScreen> createState() =>
+      _NotificationsSettingsScreenState();
 }
 
-class _NotificationsSettingsScreenState extends State<NotificationsSettingsScreen> {
+class _NotificationsSettingsScreenState
+    extends State<NotificationsSettingsScreen> {
   bool pushNotifications = true;
   bool emailAlerts = true;
   bool budgetExceeded = true;
@@ -62,7 +64,6 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
             emailAlerts,
             (value) => setState(() => emailAlerts = value),
           ),
-
           const SizedBox(height: 24),
           const Text(
             'Budget Alerts',
@@ -91,7 +92,6 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
             weeklySummary,
             (value) => setState(() => weeklySummary = value),
           ),
-
           const SizedBox(height: 24),
           const Text(
             'Other',

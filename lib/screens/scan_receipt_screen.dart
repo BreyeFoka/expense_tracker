@@ -138,11 +138,13 @@ class _ScanReceiptScreenState extends State<ScanReceiptScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white, size: 28),
+                    icon:
+                        const Icon(Icons.close, color: Colors.white, size: 28),
                     onPressed: () => Navigator.pop(context),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.flash_off, color: Colors.white, size: 28),
+                    icon: const Icon(Icons.flash_off,
+                        color: Colors.white, size: 28),
                     onPressed: () {
                       // Toggle flash
                     },

@@ -66,7 +66,6 @@ class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
             twoStepVerification,
             (value) => setState(() => twoStepVerification = value),
           ),
-
           const SizedBox(height: 24),
           const Text(
             'Privacy',
@@ -96,7 +95,6 @@ class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
             'View and manage sessions',
             () {},
           ),
-
           const SizedBox(height: 24),
           const Text(
             'Data',
@@ -140,7 +138,7 @@ class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isDestructive 
+                color: isDestructive
                     ? Colors.red.withOpacity(0.1)
                     : AppTheme.neonGreen.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),

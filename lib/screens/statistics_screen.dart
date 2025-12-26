@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/expense_provider.dart';
 import '../models/expense.dart';
-import 'package:intl/intl.dart';
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});

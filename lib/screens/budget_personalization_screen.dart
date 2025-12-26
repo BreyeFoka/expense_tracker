@@ -5,10 +5,12 @@ class BudgetPersonalizationScreen extends StatefulWidget {
   const BudgetPersonalizationScreen({super.key});
 
   @override
-  State<BudgetPersonalizationScreen> createState() => _BudgetPersonalizationScreenState();
+  State<BudgetPersonalizationScreen> createState() =>
+      _BudgetPersonalizationScreenState();
 }
 
-class _BudgetPersonalizationScreenState extends State<BudgetPersonalizationScreen> {
+class _BudgetPersonalizationScreenState
+    extends State<BudgetPersonalizationScreen> {
   final Map<String, double> categoryBudgets = {
     'Food': 300.00,
     'Transport': 100.00,
@@ -220,7 +222,8 @@ class _BudgetPersonalizationScreenState extends State<BudgetPersonalizationScree
     );
   }
 
-  Widget _buildCategoryBudgetTile(String name, double amount, IconData icon, Color color) {
+  Widget _buildCategoryBudgetTile(
+      String name, double amount, IconData icon, Color color) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -272,7 +275,8 @@ class _BudgetPersonalizationScreenState extends State<BudgetPersonalizationScree
   }
 
   void _showEditBudgetDialog(String category, double currentAmount) {
-    final controller = TextEditingController(text: currentAmount.toStringAsFixed(0));
+    final controller =
+        TextEditingController(text: currentAmount.toStringAsFixed(0));
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -299,16 +303,19 @@ class _BudgetPersonalizationScreenState extends State<BudgetPersonalizationScree
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.white70)),
+            child:
+                const Text('Cancel', style: TextStyle(color: Colors.white70)),
           ),
           TextButton(
             onPressed: () {
               setState(() {
-                categoryBudgets[category] = double.tryParse(controller.text) ?? currentAmount;
+                categoryBudgets[category] =
+                    double.tryParse(controller.text) ?? currentAmount;
               });
               Navigator.pop(context);
             },
-            child: const Text('Save', style: TextStyle(color: AppTheme.neonGreen)),
+            child:
+                const Text('Save', style: TextStyle(color: AppTheme.neonGreen)),
           ),
         ],
       ),

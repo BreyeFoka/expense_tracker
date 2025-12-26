@@ -5,13 +5,21 @@ class ReviewTransactionScreen extends StatefulWidget {
   const ReviewTransactionScreen({super.key});
 
   @override
-  State<ReviewTransactionScreen> createState() => _ReviewTransactionScreenState();
+  State<ReviewTransactionScreen> createState() =>
+      _ReviewTransactionScreenState();
 }
 
 class _ReviewTransactionScreenState extends State<ReviewTransactionScreen> {
   String selectedCategory = 'Food';
 
-  final List<String> categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Other'];
+  final List<String> categories = [
+    'Food',
+    'Transport',
+    'Entertainment',
+    'Shopping',
+    'Bills',
+    'Other'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +77,8 @@ class _ReviewTransactionScreenState extends State<ReviewTransactionScreen> {
                 _buildInfoTile('Merchant', 'Starbucks Coffee', Icons.store),
                 _buildInfoTile('Date', 'Nov 15, 2024', Icons.calendar_today),
                 _buildInfoTile('Time', '10:30 AM', Icons.access_time),
-                _buildInfoTile('Reference', 'TXN-2024-11-15-001', Icons.receipt_long),
+                _buildInfoTile(
+                    'Reference', 'TXN-2024-11-15-001', Icons.receipt_long),
 
                 const SizedBox(height: 24),
 
@@ -111,13 +120,11 @@ class _ReviewTransactionScreenState extends State<ReviewTransactionScreen> {
                         child: Text(
                           category,
                           style: TextStyle(
-                            color: isSelected
-                                ? AppTheme.darkGreen
-                                : Colors.white,
+                            color:
+                                isSelected ? AppTheme.darkGreen : Colors.white,
                             fontSize: 14,
-                            fontWeight: isSelected
-                                ? FontWeight.w600
-                                : FontWeight.w500,
+                            fontWeight:
+                                isSelected ? FontWeight.w600 : FontWeight.w500,
                           ),
                         ),
                       ),
